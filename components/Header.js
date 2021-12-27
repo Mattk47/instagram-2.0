@@ -11,8 +11,14 @@ import {
 import {
     HomeIcon
 } from '@heroicons/react/solid'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 function Header() {
+
+    const { data: session } = useSession()
+
+    console.log(session)
+
     return (
         <div className='shadow-sm border-b bg-white sticky top-0 z-50'>
             <div className='flex justify-between max-w-6xl mx-5 lg:mx-auto'>
@@ -45,18 +51,28 @@ function Header() {
                 <div className='flex items-center justify-end space-x-4'>
                     <HomeIcon className="navButton" />
                     <MenuIcon className="h-6 w-10 md:hidden cursor-pointer" />
+                    {
+                        session ? (
+                            <>
+                                <div className='relative navButton'>
+                                    <PaperAirplaneIcon className="rotate-45" />
+                                    <div className='absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>
+                                        3</div>
 
-                    <div className='relative navButton'>
-                        <PaperAirplaneIcon className="rotate-45" />
-                        <div className='absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white'>
-                            3</div>
+                                </div>
+                                <PlusCircleIcon className="navButton" />
+                                <UserGroupIcon className="navButton" />
+                                <HeartIcon className="navButton" />
 
-                    </div>
-                    <PlusCircleIcon className="navButton" />
-                    <UserGroupIcon className="navButton" />
-                    <HeartIcon className="navButton" />
+                                <img src={session?.user?.image} alt='profile pic' className='rounded-full h-10 w-10 cursor-pointer'
+                                    onClick={signOut} />
+                            </>
 
-                    <img src='https://media.hardwiredmagazine.com/2017/10/Pink_Floyd_DSOTM.jpg' alt='profile pic' className='rounded-full h-10 w-10 cursor-pointer' />
+                        ) : (
+                            <button onClick={signIn} >Sign In</button>
+
+                        )
+                    }
                 </div>
             </div>
         </div>
