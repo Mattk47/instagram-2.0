@@ -1,6 +1,6 @@
 
 function Story({ img, username }) {
-    console.log(img)
+
     return (
         <div>
             <img className='h-14 w-14 rounded-full p-[2px]
